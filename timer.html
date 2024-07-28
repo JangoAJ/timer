@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: transparent; }
+        #timer { font-size: 48px; }
+        button { font-size: 24px; }
+    </style>
+</head>
+<body>
+    <div id="timer">00:00:00</div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="pauseTimer()">Pause</button>
+    <button onclick="resetTimer()">Reset</button>
+
+    <script>
+        let timer;
+        let isRunning = false;
+        let elapsed = 0;
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            const start = Date.now() - elapsed;
+            timer = setInterval(() => {
+                elapsed = Date.now() - start;
+                document.getElementById('timer').innerText = formatTime(elapsed);
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isRunning = false;
+            clearInterval(timer);
+        }
+
+        function resetTimer() {
+            isRunning = false;
+            clearInterval(timer);
+            elapsed = 0;
+            document.getElementById('timer').innerText = '00:00:00';
+        }
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+            const seconds = String(totalSeconds % 60).padStart(2, '0');
+            return `${hours}:${minutes}:${seconds}`;
+        }
+    </script>
+</body>
+</html>
